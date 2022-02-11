@@ -1,8 +1,8 @@
 using System.Data;
 using Dapper;
-using Microsoft.Data.SqlClient;
 using Npgsql;
 using WebAppMVC.Models;
+
 
 namespace WebAppMVC.Data;
 
@@ -11,13 +11,14 @@ public class CategoryRepository : ICategoryRepository
     string connectionString = null;
     public CategoryRepository(string conn)
     {
+        Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
         connectionString = conn;
     }
     public List<Category> GetCategories()
     {
         using (IDbConnection db = new NpgsqlConnection(connectionString))
         {
-            return db.Query<Category>("SELECT * FROM \"Category\"").ToList();
+            return db.Query<Category>("SELECT * FROM category").ToList();
         }
     }
  
@@ -25,7 +26,7 @@ public class CategoryRepository : ICategoryRepository
     {
         using (IDbConnection db = new NpgsqlConnection(connectionString))
         {
-            return db.Query<Category>("SELECT * FROM \"Category\" WHERE \"Id\" = @id", new { id }).FirstOrDefault();
+            return db.Query<Category>("SELECT * FROM category WHERE id = @id", new { id }).FirstOrDefault();
         }
     }
  
@@ -33,7 +34,7 @@ public class CategoryRepository : ICategoryRepository
     {
         using (IDbConnection db = new NpgsqlConnection(connectionString))
         {
-            var sqlQuery = "INSERT INTO \"Category\" (\"Name\", \"DisplayOrder\") VALUES(@Name, @DisplayOrder)";
+            var sqlQuery = "INSERT INTO category (name, display_order) VALUES(@Name, @DisplayOrder)";
             db.Execute(sqlQuery, category);
         }
     }
@@ -42,7 +43,7 @@ public class CategoryRepository : ICategoryRepository
     {
         using (IDbConnection db = new NpgsqlConnection(connectionString))
         {
-            var sqlQuery = "UPDATE \"Category\" SET \"Name\" = @Name, \"DisplayOrder\" = @DisplayOrder WHERE \"Id\" = @Id";
+            var sqlQuery = "UPDATE category SET name = @Name, display_order = @DisplayOrder WHERE id = @Id";
             db.Execute(sqlQuery, category);
         }
     }
@@ -51,7 +52,7 @@ public class CategoryRepository : ICategoryRepository
     {
         using (IDbConnection db = new NpgsqlConnection(connectionString))
         {
-            var sqlQuery = "DELETE FROM \"Category\" WHERE \"Id\" = @id";
+            var sqlQuery = "DELETE FROM category WHERE id = @id";
             db.Execute(sqlQuery, new { id });
         }
     }

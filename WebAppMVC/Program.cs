@@ -1,13 +1,21 @@
 using Microsoft.EntityFrameworkCore;
 using WebAppMVC.Data;
+using WebAppMVC.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+// EF
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(
     builder.Configuration.GetConnectionString("DefaultConnection")
 ));
+// Dapper
+
+builder.Services.AddTransient<ICategoryRepository, CategoryRepository>(provider => new CategoryRepository(connectionString));
+
 
 var app = builder.Build();
 

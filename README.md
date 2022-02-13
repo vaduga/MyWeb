@@ -1,8 +1,8 @@
 
-local run: 
-  docker-compose up          // psql container
-  dotnet run MyWebApp
+local run: <br>
+  docker-compose up          // psql container <br>
+  dotnet run MyWebApp <br>
 
-deployed to heroku: 
-  https://dataheavy.herokuapp.com         // DB: heroku psql online data-source
-                                          // switched DB connection string in appsettings.json
+deployed after release: <br>
+  https://dataheavy.herokuapp.com         // DB: heroku psql online data-source <br>
+																					// switched DB connection string in appsettings.json

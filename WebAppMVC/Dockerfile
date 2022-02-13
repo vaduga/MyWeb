@@ -6,7 +6,12 @@ EXPOSE 5000
 
 COPY bin/Release/net6.0/publish/ ./
 
-ENTRYPOINT ["dotnet", "WebAppMVC.dll"]
+#ENTRYPOINT ["dotnet", "WebAppMVC.dll"]
 
 
 # --net=host  to let use postgres local ports
+
+
+# for heroku
+
+CMD ASPNETCORE_URLS=http://*:$PORT dotnet WebAppMVC.dll
